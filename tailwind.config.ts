@@ -13,7 +13,17 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        serif: ['"Cormorant Garamond"', 'serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
       colors: {
+        cream: "hsl(var(--cream))",
+        sage: "hsl(var(--sage))",
+        stone: "hsl(var(--stone))",
+        forest: "hsl(var(--forest))",
+        gold: "hsl(var(--gold))",
+        ink: "hsl(var(--ink))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -84,6 +94,14 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      backgroundImage: {
+        'gradient-overlay': 'var(--gradient-overlay)',
+        'gradient-soft': 'var(--gradient-soft)',
+      },
+      boxShadow: {
+        soft: 'var(--shadow-soft)',
+        frame: 'var(--shadow-frame)',
       },
     },
   },
