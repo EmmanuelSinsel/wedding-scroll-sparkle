@@ -7,6 +7,8 @@ import heroImg from "@/assets/_MG_9100.jpg";
 import storyImg from "@/assets/story.jpg";
 import rsvpImg from "@/assets/rsvp.jpg";
 import padresImg from "@/assets/_MG_8868.png";
+import dresscodeFormalImg from "@/assets/dresscode_formal.png";
+import dresscodeSneakerImg from "@/assets/dresscode_sneaker.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,18 +67,20 @@ const Index = () => {
 
   const itinerary = [
     {
-      time: "5:00 P. M.",
+      time: "5:00",
+      ampm: "P. M.",
       title: "CEREMONIA RELIGIOSA",
       location: "Parroquia Nuestra Señora de Fátima",
       icon: <Church strokeWidth={1} className="w-10 h-10 md:w-12 md:h-12" />,
-      mapLink: "https://maps.google.com" // Enlace Iglesia
+      mapLink: "https://maps.app.goo.gl/bz5EgJFWQ7QxXiYp7" // Enlace Iglesia
     },
     {
-      time: "8:00 P. M.",
+      time: "8:00",
+      ampm: "P. M.",
       title: "RECEPCIÓN",
       location: "Salón Marsella",
       icon: <Wine strokeWidth={1} className="w-10 h-10 md:w-12 md:h-12" />,
-      mapLink: "https://maps.google.com" // Enlace Recepción
+      mapLink: "https://maps.app.goo.gl/rQeF94DS54QLoJXa6" // Enlace Recepción
     },
   ];
 
@@ -110,17 +114,17 @@ const Index = () => {
           <h1
             style={{
               fontFamily: 'Corinthia, cursive',
-              textShadow: '0 0 20px rgba(255, 255, 235, 0.8), 0 0 40px rgba(255, 255, 235, 0.4)'
+              textShadow: '0 0 10px rgba(255, 255, 235, 0.8), 0 0 40px rgba(255, 255, 235, 0.4)'
             }}
             className="hero-title font-serif text-6xl md:text-8xl lg:text-9xl font-light mb-8 leading-none"
           >
             Verónica <span className="italic">&</span> Alejandro
           </h1>
           <p
-            style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}
+            style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)', fontSize: 24 }}
             className="hero-date font-sans font-medium text-sm md:text-base tracking-widest-extra uppercase"
           >
-            24 . OCTUBRE . 26
+            24 · OCTUBRE · 2026
           </p>
         </div>
       </section>
@@ -162,7 +166,7 @@ const Index = () => {
       <section id="itinerario" className="py-24 md:py-40 px-6 md:px-12 bg-muted">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-20 reveal">
-            <h2 className="font-serif text-5xl md:text-6xl italic text-ink">Itinerario de actividades</h2>
+            <h2 className="font-serif text-5xl md:text-6xl italic text-ink">Itinerario</h2>
           </div>
 
           <div className="relative flex flex-col items-center">
@@ -179,9 +183,11 @@ const Index = () => {
                       <div className="text-ink/80">{item.icon}</div>
                     ) : (
                       <div>
-                        <p className="font-serif font-bold text-lg md:text-xl text-ink">{item.time}</p>
-                        <p className="text-xs md:text-sm tracking-widest-extra uppercase mt-2 text-ink/70 whitespace-pre-line">
+                        <p className="text-xs md:text-sm font-bold tracking-widest-extra uppercase text-ink/80 whitespace-pre-line">
                           {item.title}
+                        </p>
+                        <p className="text-sm mt-1 text-ink/80">
+                          {item.time} <span className="text-xs">{item.ampm}</span>
                         </p>
                         {item.location && (
                           <p className="text-sm italic mt-1 text-ink/80">
@@ -208,9 +214,11 @@ const Index = () => {
                   <div className={`w-[45%] flex ${isEven ? 'justify-start text-left' : 'justify-start'}`}>
                     {isEven ? (
                       <div>
-                        <p className="font-serif font-bold text-lg md:text-xl text-ink">{item.time}</p>
-                        <p className="text-xs md:text-sm tracking-widest-extra uppercase mt-2 text-ink/70 whitespace-pre-line">
+                        <p className="text-xs md:text-sm font-bold tracking-widest-extra uppercase text-ink/80 whitespace-pre-line">
                           {item.title}
+                        </p>
+                        <p className="text-sm mt-1 text-ink/80">
+                          {item.time} <span className="text-xs">{item.ampm}</span>
                         </p>
                         {item.location && (
                           <p className="text-sm italic mt-1 text-ink/80">
@@ -238,9 +246,37 @@ const Index = () => {
           </div>
 
           <div className="text-center mt-24 reveal">
-            <p className="text-sm md:text-base tracking-widest-extra uppercase text-ink/80 font-light">
-              Los Mochis • Sinaloa • 2026
+            <p className="text-sm md:text-base tracking-widest-extra uppercase text-ink/80 font-light leading-relaxed">
+              <span style={{ fontSize: 24 }} className="text-base md:text-lg font-bold text-ink">24 · Octubre · 2026</span>
+              <br />
+              <br />
+              LOS MOCHIS · SINALOA
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CÓDIGO DE VESTIMENTA */}
+      <section className="py-24 md:py-32 px-6 md:px-12 bg-cream reveal">
+        <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
+          <h2 className="font-serif text-5xl md:text-6xl italic text-ink mb-16">
+            Código de vestimenta
+          </h2>
+          
+          <p className="text-sm md:text-base tracking-widest-extra uppercase text-ink font-bold mb-10">
+            Etiqueta rigurosa
+          </p>
+
+          <div className="mb-16">
+            <img src={dresscodeFormalImg} alt="Traje y vestido" className="h-32 md:h-40 object-contain mix-blend-multiply opacity-80" />
+          </div>
+
+          <p className="font-serif italic text-2xl md:text-3xl mb-10 text-ink/90 leading-relaxed max-w-2xl">
+            La pista nos espera y no aceptamos excusas.<br className="hidden md:block"/> ¡Lleva tus tenis y a bailar!
+          </p>
+
+          <div>
+            <img src={dresscodeSneakerImg} alt="Tenis" className="h-24 md:h-32 object-contain mix-blend-multiply opacity-80" />
           </div>
         </div>
       </section>
