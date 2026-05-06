@@ -3,9 +3,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Church, Wine } from "lucide-react";
 
-import heroImg from "@/assets/hero-couple.jpg";
+import heroImg from "@/assets/_MG_9100.jpg";
 import storyImg from "@/assets/story.jpg";
 import rsvpImg from "@/assets/rsvp.jpg";
+import padresImg from "@/assets/_MG_8868.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,16 +64,16 @@ const Index = () => {
   };
 
   const itinerary = [
-    { 
-      time: "5:00 P. M.", 
-      title: "CEREMONIA RELIGIOSA", 
+    {
+      time: "5:00 P. M.",
+      title: "CEREMONIA RELIGIOSA",
       location: "Parroquia Nuestra Señora de Fátima",
       icon: <Church strokeWidth={1} className="w-10 h-10 md:w-12 md:h-12" />,
       mapLink: "https://maps.google.com" // Enlace Iglesia
     },
-    { 
-      time: "8:00 P. M.", 
-      title: "RECEPCIÓN", 
+    {
+      time: "8:00 P. M.",
+      title: "RECEPCIÓN",
       location: "Salón Marsella",
       icon: <Wine strokeWidth={1} className="w-10 h-10 md:w-12 md:h-12" />,
       mapLink: "https://maps.google.com" // Enlace Recepción
@@ -91,11 +92,6 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-overlay" />
 
         <nav className="hero-nav absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 md:px-12 py-6 text-cream">
-          <div className="flex gap-6 md:gap-8 text-xs tracking-widest-extra uppercase font-light">
-            <button onClick={() => scrollTo("story")} className="hover:text-gold transition-colors">Nuestra Historia</button>
-            <button onClick={() => scrollTo("itinerario")} className="hover:text-gold transition-colors hidden sm:inline">Itinerario</button>
-          </div>
-          <div className="hidden md:block font-serif text-lg tracking-widest">V & A · 24.10.26</div>
           <button
             onClick={() => scrollTo("rsvp")}
             className="bg-cream text-ink px-6 py-2.5 text-xs tracking-widest-extra uppercase hover:bg-gold hover:text-cream transition-colors rounded-full"
@@ -105,39 +101,55 @@ const Index = () => {
         </nav>
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-cream px-6">
-          <p className="hero-eyebrow font-serif italic text-lg md:text-xl mb-6">¡NOS CASAMOS!</p>
-          <h1 className="hero-title font-serif text-6xl md:text-8xl lg:text-9xl font-light mb-8 leading-none">
+          <p
+            style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}
+            className="hero-eyebrow font-sans font-medium text-sm md:text-base tracking-widest-extra uppercase mb-6"
+          >
+            ¡NOS CASAMOS!
+          </p>
+          <h1
+            style={{
+              fontFamily: 'Corinthia, cursive',
+              textShadow: '0 0 20px rgba(255, 255, 235, 0.8), 0 0 40px rgba(255, 255, 235, 0.4)'
+            }}
+            className="hero-title font-serif text-6xl md:text-8xl lg:text-9xl font-light mb-8 leading-none"
+          >
             Verónica <span className="italic">&</span> Alejandro
           </h1>
-          <p className="hero-date text-sm md:text-base tracking-widest-extra">24 . OCTUBRE . 26</p>
+          <p
+            style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}
+            className="hero-date font-sans font-medium text-sm md:text-base tracking-widest-extra uppercase"
+          >
+            24 . OCTUBRE . 26
+          </p>
         </div>
       </section>
 
       {/* BENDICIÓN DE PADRES */}
       <section className="py-24 md:py-32 px-6 md:px-12 bg-cream reveal">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-20">
-          
+
           <div className="w-full md:w-1/3 order-2 md:order-1 overflow-hidden shadow-frame aspect-[3/4]">
-            <img 
-              src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop" 
-              alt="Anillos de boda" 
-              loading="lazy" 
-              className="frame-img h-full w-full object-cover" 
+            <img
+              src={padresImg}
+              alt="Anillos de boda"
+              loading="lazy"
+              className="frame-img h-full w-full object-cover"
             />
           </div>
 
           <div className="w-full md:w-2/3 order-1 md:order-2 flex flex-col items-center text-center">
             <p className="font-serif italic text-2xl md:text-3xl mb-16 text-ink/90 leading-relaxed max-w-xl">
-              Con la bendición de Dios, la Virgen y de nuestros padres
+              Con la bendición de Dios, de nuestra santísima Virgen y de nuestros padres
             </p>
-            
+
             <div className="space-y-4 mb-10">
               <p className="text-sm md:text-base tracking-widest-extra uppercase text-ink font-light">Verónica Patricia Guardado Medina</p>
               <p className="text-sm md:text-base tracking-widest-extra uppercase text-ink font-light">Juan José Medina Ortiz</p>
             </div>
-            
+
             <p className="font-serif italic text-4xl md:text-5xl mb-10 text-ink/40">&</p>
-            
+
             <div className="space-y-4">
               <p className="text-sm md:text-base tracking-widest-extra uppercase text-ink font-light">Diana Verónica Sinsel Gómez</p>
               <p className="text-sm md:text-base tracking-widest-extra uppercase text-ink font-light">Arsenio Hernández Mendoza</p>
@@ -160,7 +172,7 @@ const Index = () => {
               const isEven = index % 2 === 0;
               return (
                 <div key={index} className="relative w-full flex justify-between items-center mb-16 md:mb-24 reveal">
-                  
+
                   {/* Lado Izquierdo */}
                   <div className={`w-[45%] flex ${isEven ? 'justify-end' : 'justify-end text-right'}`}>
                     {isEven ? (
@@ -172,14 +184,14 @@ const Index = () => {
                           {item.title}
                         </p>
                         {item.location && (
-                           <p className="text-sm italic mt-1 text-ink/80">
-                             {item.location}
-                           </p>
+                          <p className="text-sm italic mt-1 text-ink/80">
+                            {item.location}
+                          </p>
                         )}
                         {item.mapLink && (
-                          <a 
-                            href={item.mapLink} 
-                            target="_blank" 
+                          <a
+                            href={item.mapLink}
+                            target="_blank"
                             rel="noreferrer"
                             className="inline-block mt-4 bg-ink text-cream px-6 py-2.5 rounded-full text-[10px] md:text-xs tracking-widest-extra uppercase hover:bg-gold hover:text-cream transition-colors duration-300 shadow-sm"
                           >
@@ -201,14 +213,14 @@ const Index = () => {
                           {item.title}
                         </p>
                         {item.location && (
-                           <p className="text-sm italic mt-1 text-ink/80">
-                             {item.location}
-                           </p>
+                          <p className="text-sm italic mt-1 text-ink/80">
+                            {item.location}
+                          </p>
                         )}
                         {item.mapLink && (
-                          <a 
-                            href={item.mapLink} 
-                            target="_blank" 
+                          <a
+                            href={item.mapLink}
+                            target="_blank"
                             rel="noreferrer"
                             className="inline-block mt-4 bg-ink text-cream px-6 py-2.5 rounded-full text-[10px] md:text-xs tracking-widest-extra uppercase hover:bg-gold hover:text-cream transition-colors duration-300 shadow-sm"
                           >

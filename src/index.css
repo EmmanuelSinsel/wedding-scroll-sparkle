@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Corinthia:wght@400;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -97,7 +97,10 @@
     font-feature-settings: "kern", "liga";
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     @apply font-serif font-light tracking-tight;
   }
 }
@@ -106,9 +109,11 @@
   .font-serif {
     font-family: 'Cormorant Garamond', serif;
   }
+
   .font-sans {
     font-family: 'Inter', system-ui, sans-serif;
   }
+
   .tracking-widest-extra {
     letter-spacing: 0.4em;
   }
