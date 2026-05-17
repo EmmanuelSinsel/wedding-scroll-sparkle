@@ -7,7 +7,8 @@ import { useInvitationData } from "@/hooks/useInvitationData";
 
 import heroImg from "@/assets/_MG_9100.jpg";
 import storyImg from "@/assets/story.jpg";
-import rsvpImg from "@/assets/rsvp.jpg";
+import rsvpImg from "@/assets/_MG_8369.jpg";
+import pasesImg from "@/assets/_MG_8572.jpg";
 import padresImg from "@/assets/_MG_8868.png";
 import dresscodeFormalImg from "@/assets/dresscode_formal.png";
 import dresscodeSneakerImg from "@/assets/dresscode_sneaker.png";
@@ -326,38 +327,49 @@ const Index = () => {
 
       {/* PASES */}
       <section className="py-24 md:py-32 px-6 md:px-12 bg-muted text-ink reveal">
-        <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
-          <h2 className="font-serif text-5xl md:text-6xl italic mb-8">
-            Pases
-          </h2>
-          <br></br>
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-20">
 
-          {nombre ? (
-            <>
-              <p className="text-sm md:text-base tracking-widest-extra uppercase font-bold text-ink mb-8">
-                {nombre}
-              </p>
+          <div className="w-full md:w-1/2 overflow-hidden shadow-frame aspect-[3/4]">
+            <img
+              src={pasesImg}
+              alt="Pases"
+              loading="lazy"
+              className="frame-img h-full w-full object-cover"
+            />
+          </div>
+
+          <div className="w-full md:w-1/2 flex flex-col items-center text-center">
+            <h2 className="font-serif text-5xl md:text-6xl italic mb-12">
+              Pases
+            </h2>
+
+            {nombre ? (
+              <>
+                <p className="text-sm md:text-base tracking-widest-extra uppercase font-bold text-ink mb-8">
+                  {nombre}
+                </p>
+                <p className="text-xs md:text-sm tracking-widest-extra uppercase text-ink/80 mb-8">
+                  Hemos reservado
+                </p>
+              </>
+            ) : (
               <p className="text-xs md:text-sm tracking-widest-extra uppercase text-ink/80 mb-8">
                 Hemos reservado
               </p>
-            </>
-          ) : (
-            <p className="text-xs md:text-sm tracking-widest-extra uppercase text-ink/80 mb-8">
-              Hemos reservado
+            )}
+
+            <p className="font-serif text-6xl md:text-8xl text-gold mb-8">
+              {numeroAPalabra(pases)}
             </p>
-          )}
 
-          <p className="font-serif text-6xl md:text-8xl text-gold mb-8">
-            {numeroAPalabra(pases)}
-          </p>
+            <p className="text-xs md:text-sm tracking-widest-extra uppercase text-ink/80 mb-8">
+              {pases === 1 ? 'lugar en su honor' : 'lugares en su honor'}
+            </p>
 
-          <p className="text-xs md:text-sm tracking-widest-extra uppercase text-ink/80 mb-8">
-            {pases === 1 ? 'lugar en su honor' : 'lugares en su honor'}
-          </p>
-
-          <p className="text-sm md:text-base tracking-widest-extra uppercase font-bold">
-            No niños
-          </p>
+            <p className="text-sm md:text-base tracking-widest-extra uppercase font-bold">
+              No niños
+            </p>
+          </div>
         </div>
       </section>
 
@@ -467,7 +479,7 @@ const Index = () => {
             ¡Esperamos verte ahí!
           </h2>
           <p className="font-serif text-xl md:text-2xl mb-12 text-ink/80 max-w-xl mx-auto">
-            Tu presencia significaría el mundo para nosotros. Por favor confirma antes del 14 de septiembre.
+            Tu presencia significaría el mundo para nosotros. Por favor confirma antes del 24 de septiembre.
           </p>
           <button
             onClick={() => setIsRsvpOpen(true)}
