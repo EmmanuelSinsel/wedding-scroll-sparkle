@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Church, Wine } from "lucide-react";
+import { Church, Wine, Gift, ShoppingBag, CreditCard, Ticket, X } from "lucide-react";
+
+import { useInvitationData } from "@/hooks/useInvitationData";
 
 import heroImg from "@/assets/_MG_9100.jpg";
 import storyImg from "@/assets/story.jpg";
@@ -9,11 +11,48 @@ import rsvpImg from "@/assets/rsvp.jpg";
 import padresImg from "@/assets/_MG_8868.png";
 import dresscodeFormalImg from "@/assets/dresscode_formal.png";
 import dresscodeSneakerImg from "@/assets/dresscode_sneaker.png";
+import flyerImg from "@/assets/flyer.jpeg";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const numeroAPalabra = (num: number) => {
+  const words = ['CERO', 'UN', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE', 'DIEZ'];
+  return words[num] || num.toString();
+};
+
 const Index = () => {
   const root = useRef<HTMLDivElement>(null);
+  const { nombre, pases, telefono } = useInvitationData();
+  const [isFlyerOpen, setIsFlyerOpen] = useState(false);
+  const [isRsvpOpen, setIsRsvpOpen] = useState(false);
+  const [asistencia, setAsistencia] = useState<string>('');
+  const [rsvpStatus, setRsvpStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  const handleRsvpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!asistencia) return;
+    setRsvpStatus('submitting');
+    const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdbCoSFcNEpuFsJOZmHn9F5FJ8DSjETjpYG-Cqad93GCv6B3g/formResponse';
+    const formData = new URLSearchParams();
+    formData.append('entry.1498135098', nombre || 'Invitado sin nombre');
+    formData.append('entry.954266149', telefono || 'Sin teléfono');
+    formData.append('entry.471299083', (pases || 0).toString());
+    formData.append('entry.877086558', asistencia);
+
+    try {
+      await fetch(formUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+      });
+      setRsvpStatus('success');
+    } catch (error) {
+      setRsvpStatus('error');
+    }
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -95,12 +134,12 @@ const Index = () => {
         />
         <div className="absolute inset-0 bg-gradient-overlay" />
 
-        <nav className="hero-nav absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 md:px-12 py-6 text-cream">
+        <nav className="hero-nav absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 text-cream">
           <button
             onClick={() => scrollTo("rsvp")}
             className="bg-cream text-ink px-6 py-2.5 text-xs tracking-widest-extra uppercase hover:bg-gold hover:text-cream transition-colors rounded-full"
           >
-            RSVP
+            Confirmar
           </button>
         </nav>
 
@@ -121,8 +160,8 @@ const Index = () => {
             Verónica <span className="italic">&</span> Alejandro
           </h1>
           <p
-            style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)', fontSize: 24 }}
-            className="hero-date font-sans font-medium text-sm md:text-base tracking-widest-extra uppercase"
+            style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}
+            className="hero-date font-sans font-medium text-[14px] sm:text-[18px] md:text-[24px] tracking-widest-extra uppercase"
           >
             24 · OCTUBRE · 2026
           </p>
@@ -178,11 +217,11 @@ const Index = () => {
                 <div key={index} className="relative w-full flex justify-between items-center mb-16 md:mb-24 reveal">
 
                   {/* Lado Izquierdo */}
-                  <div className={`w-[45%] flex ${isEven ? 'justify-end' : 'justify-end text-right'}`}>
+                  <div className="w-[45%] flex justify-end">
                     {isEven ? (
                       <div className="text-ink/80">{item.icon}</div>
                     ) : (
-                      <div>
+                      <div className="w-full flex flex-col items-center text-center">
                         <p className="text-xs md:text-sm font-bold tracking-widest-extra uppercase text-ink/80 whitespace-pre-line">
                           {item.title}
                         </p>
@@ -195,14 +234,16 @@ const Index = () => {
                           </p>
                         )}
                         {item.mapLink && (
-                          <a
-                            href={item.mapLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-block mt-4 bg-ink text-cream px-6 py-2.5 rounded-full text-[10px] md:text-xs tracking-widest-extra uppercase hover:bg-gold hover:text-cream transition-colors duration-300 shadow-sm"
-                          >
-                            ¿Cómo llegar?
-                          </a>
+                          <div className="w-full flex justify-center mt-4">
+                            <a
+                              href={item.mapLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-block bg-ink text-cream px-6 py-2.5 rounded-full text-[10px] md:text-xs tracking-widest-extra uppercase hover:bg-gold hover:text-cream transition-colors duration-300 shadow-sm"
+                            >
+                              ¿Cómo llegar?
+                            </a>
+                          </div>
                         )}
                       </div>
                     )}
@@ -211,9 +252,9 @@ const Index = () => {
                   <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-ink z-10"></div>
 
                   {/* Lado Derecho */}
-                  <div className={`w-[45%] flex ${isEven ? 'justify-start text-left' : 'justify-start'}`}>
+                  <div className="w-[45%] flex justify-start">
                     {isEven ? (
-                      <div>
+                      <div className="w-full flex flex-col items-center text-center">
                         <p className="text-xs md:text-sm font-bold tracking-widest-extra uppercase text-ink/80 whitespace-pre-line">
                           {item.title}
                         </p>
@@ -226,14 +267,16 @@ const Index = () => {
                           </p>
                         )}
                         {item.mapLink && (
-                          <a
-                            href={item.mapLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-block mt-4 bg-ink text-cream px-6 py-2.5 rounded-full text-[10px] md:text-xs tracking-widest-extra uppercase hover:bg-gold hover:text-cream transition-colors duration-300 shadow-sm"
-                          >
-                            ¿Cómo llegar?
-                          </a>
+                          <div className="w-full flex justify-center mt-4">
+                            <a
+                              href={item.mapLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-block bg-ink text-cream px-6 py-2.5 rounded-full text-[10px] md:text-xs tracking-widest-extra uppercase hover:bg-gold hover:text-cream transition-colors duration-300 shadow-sm"
+                            >
+                              ¿Cómo llegar?
+                            </a>
+                          </div>
                         )}
                       </div>
                     ) : (
@@ -247,7 +290,7 @@ const Index = () => {
 
           <div className="text-center mt-24 reveal">
             <p className="text-sm md:text-base tracking-widest-extra uppercase text-ink/80 font-light leading-relaxed">
-              <span style={{ fontSize: 24 }} className="text-base md:text-lg font-bold text-ink">24 · Octubre · 2026</span>
+              <span className="text-[3.5vw] sm:text-[20px] md:text-[24px] font-bold text-ink whitespace-nowrap">24 · Octubre · 2026</span>
               <br />
               <br />
               LOS MOCHIS · SINALOA
@@ -262,7 +305,7 @@ const Index = () => {
           <h2 className="font-serif text-5xl md:text-6xl italic text-ink mb-16">
             Código de vestimenta
           </h2>
-          
+
           <p className="text-sm md:text-base tracking-widest-extra uppercase text-ink font-bold mb-10">
             Etiqueta rigurosa
           </p>
@@ -272,7 +315,7 @@ const Index = () => {
           </div>
 
           <p className="font-serif italic text-2xl md:text-3xl mb-10 text-ink/90 leading-relaxed max-w-2xl">
-            La pista nos espera y no aceptamos excusas.<br className="hidden md:block"/> ¡Lleva tus tenis y a bailar!
+            La pista nos espera y no aceptamos excusas.<br className="hidden md:block" /> ¡Lleva tus tenis y a bailar!
           </p>
 
           <div>
@@ -281,26 +324,140 @@ const Index = () => {
         </div>
       </section>
 
-      {/* STORY CTA */}
-      <section id="story" className="relative h-[70vh] flex items-center justify-center text-center text-cream overflow-hidden">
-        <img src={storyImg} alt="Historia" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-ink/50" />
-        <div className="reveal relative z-10 px-6 max-w-2xl">
-          <p className="text-xs tracking-widest-extra uppercase mb-6 text-cream/80">Nuestra Historia</p>
-          <h2 className="font-serif text-5xl md:text-7xl mb-8 italic font-light">Un amor en capítulos.</h2>
-          <p className="font-serif text-lg md:text-xl mb-10 text-cream/90">
-            Desde un encuentro casual hasta una promesa de por vida.
+      {/* PASES */}
+      <section className="py-24 md:py-32 px-6 md:px-12 bg-muted text-ink reveal">
+        <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
+          <h2 className="font-serif text-5xl md:text-6xl italic mb-8">
+            Pases
+          </h2>
+          <br></br>
+
+          {nombre ? (
+            <>
+              <p className="text-sm md:text-base tracking-widest-extra uppercase font-bold text-ink mb-8">
+                {nombre}
+              </p>
+              <p className="text-xs md:text-sm tracking-widest-extra uppercase text-ink/80 mb-8">
+                Hemos reservado
+              </p>
+            </>
+          ) : (
+            <p className="text-xs md:text-sm tracking-widest-extra uppercase text-ink/80 mb-8">
+              Hemos reservado
+            </p>
+          )}
+
+          <p className="font-serif text-6xl md:text-8xl text-gold mb-8">
+            {numeroAPalabra(pases)}
           </p>
-          <a
-            href="#"
-            className="inline-block border border-cream px-10 py-4 text-xs tracking-widest-extra uppercase hover:bg-cream hover:text-ink transition-colors rounded-full"
-          >
-            Ver nuestra historia
-          </a>
+
+          <p className="text-xs md:text-sm tracking-widest-extra uppercase text-ink/80 mb-8">
+            {pases === 1 ? 'lugar en su honor' : 'lugares en su honor'}
+          </p>
+
+          <p className="text-sm md:text-base tracking-widest-extra uppercase font-bold">
+            No niños
+          </p>
         </div>
       </section>
 
-      {/* RSVP */}
+      {/* SUGERENCIA DE HOSPEDAJE */}
+      <section className="py-24 md:py-32 px-6 md:px-12 bg-cream text-ink reveal">
+        <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
+          <h2 className="font-serif text-5xl md:text-6xl italic mb-16">
+            Sugerencia de hospedaje
+          </h2>
+
+          <div className="w-full flex flex-col items-center">
+            <h3 className="text-sm md:text-base tracking-widest-extra uppercase font-bold mb-4 text-center">
+              Hotel Santa Anita Executive
+            </h3>
+            <p className="text-[10px] md:text-xs tracking-widest uppercase mb-10 text-ink/80 text-center">
+              Av. Gral. Gabriel Leyva s/n, Centro, 81200 Los Mochis, Sin.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-6 mb-10 w-full justify-center max-w-lg">
+              <a href="tel:+526688167046" className="bg-ink text-cream shadow-sm px-8 py-3 rounded-full text-[10px] md:text-xs tracking-widest-extra uppercase hover:bg-gold transition-colors duration-300 w-full sm:w-auto text-center flex-1">
+                668 816 7046
+              </a>
+              <a href="https://maps.google.com/?q=Hotel+Santa+Anita+Executive+Los+Mochis" target="_blank" rel="noreferrer" className="bg-ink text-cream shadow-sm px-8 py-3 rounded-full text-[10px] md:text-xs tracking-widest-extra uppercase hover:bg-gold transition-colors duration-300 w-full sm:w-auto text-center flex-1">
+                ¿Cómo llegar?
+              </a>
+            </div>
+
+            <div className="flex flex-col items-center">
+              <p className="text-[9px] md:text-[10px] tracking-widest uppercase text-ink/80 text-center leading-relaxed max-w-xl">
+                Al reservar, menciona el <span className="font-bold">"Evento especial Boda Verónica Medina & Alejandro Sinsel"</span> para aprovechar el precio preferencial
+              </p>
+              <button
+                onClick={() => setIsFlyerOpen(true)}
+                className="text-[10px] md:text-xs tracking-widest-extra uppercase font-bold text-gold hover:text-ink transition-colors mt-6"
+              >
+                más información &gt;
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SUGERENCIA DE REGALOS */}
+      <section className="py-24 md:py-32 px-6 md:px-12 bg-muted text-ink reveal">
+        <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
+          <h2 className="font-serif text-5xl md:text-6xl italic mb-16">
+            Sugerencia de regalos
+          </h2>
+
+          <p className="font-serif text-xl md:text-2xl mb-16 leading-relaxed max-w-2xl">
+            El mejor regalo es tu presencia, pero si deseas tener un detalle con nosotros, te dejamos estas opciones:
+          </p>
+
+          <div className="w-full flex flex-col-reverse md:flex-row gap-12 md:gap-16 justify-center items-center mt-4">
+
+            <div className="flex flex-col items-center flex-1">
+              <p className="text-sm md:text-base tracking-widest-extra uppercase font-bold mb-6">
+                Mesa de regalos
+              </p>
+              <Gift strokeWidth={1} className="w-12 h-12 md:w-16 md:h-16 mb-8" />
+              <div className="space-y-3 font-sans text-center flex flex-col items-center">
+                <p className="text-sm md:text-base tracking-widest-extra uppercase">Liverpool</p>
+                <p className="text-sm md:text-base tracking-widest-extra uppercase pt-2">Evento: 51833909184</p>
+              </div>
+            </div>
+
+            {/* Separador */}
+            <div className="flex items-center justify-center">
+              <div className="w-24 h-px bg-ink/30 block md:hidden"></div>
+              <div className="w-px h-40 bg-ink/30 hidden md:block"></div>
+            </div>
+
+            <div className="flex flex-col items-center flex-1">
+              <p className="text-sm md:text-base tracking-widest-extra uppercase font-bold mb-6">
+                Transferencia
+              </p>
+              <CreditCard strokeWidth={1} className="w-12 h-12 md:w-16 md:h-16 mb-8" />
+              <div className="space-y-3 font-sans text-center flex flex-col items-center">
+                <p className="text-sm md:text-base tracking-widest-extra uppercase">Citibanamex</p>
+                <p className="text-sm md:text-base tracking-widest-extra uppercase pt-2 break-all">002743902888023691</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div className="mt-16 text-center">
+            <a
+              href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/51833909184"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block bg-ink text-cream px-10 py-4 rounded-full text-[10px] md:text-xs tracking-widest-extra uppercase hover:bg-gold hover:text-cream transition-colors duration-300 shadow-sm"
+            >
+              Ir a Mesa de Regalos
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      {/* RSVP BOTON */}
       <section id="rsvp" className="relative py-32 md:py-48 px-6 md:px-12 overflow-hidden">
         <img src={rsvpImg} alt="RSVP" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-30" />
         <div className="absolute inset-0 bg-cream/70" />
@@ -312,7 +469,10 @@ const Index = () => {
           <p className="font-serif text-xl md:text-2xl mb-12 text-ink/80 max-w-xl mx-auto">
             Tu presencia significaría el mundo para nosotros. Por favor confirma antes del 14 de septiembre.
           </p>
-          <button className="bg-ink text-cream px-12 py-5 text-xs tracking-widest-extra uppercase hover:bg-gold transition-colors rounded-full">
+          <button
+            onClick={() => setIsRsvpOpen(true)}
+            className="bg-ink text-cream px-12 py-5 text-xs tracking-widest-extra uppercase hover:bg-gold transition-colors rounded-full"
+          >
             Confirmar Asistencia
           </button>
         </div>
@@ -325,15 +485,14 @@ const Index = () => {
             <h3 className="font-serif text-4xl md:text-5xl mb-4">
               Verónica <span className="italic">&</span> Alejandro
             </h3>
-            <p className="text-xs tracking-widest-extra uppercase text-cream/60">24 . 10 . 2026 · Los Mochis, Sinaloa</p>
+            <p className="text-xs tracking-widest-extra uppercase text-cream/60">24 · 10 · 2026 · Los Mochis, Sinaloa</p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center md:text-left justify-items-center">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-8 md:gap-16 text-center">
             {[
               { label: "Home", id: "home" },
               { label: "Itinerario", id: "itinerario" },
-              { label: "Historia", id: "story" },
-              { label: "RSVP", id: "rsvp" },
+              { label: "Confirmar", id: "rsvp" },
             ].map((item) => (
               <button
                 key={item.id}
@@ -352,6 +511,90 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      {/* RSVP MODAL */}
+      {isRsvpOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/90 backdrop-blur-sm transition-opacity" onClick={() => setIsRsvpOpen(false)}>
+          <div className="relative max-w-md w-full bg-cream p-8 md:p-12 text-center shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setIsRsvpOpen(false)}
+              className="absolute top-4 right-4 text-ink/60 hover:text-ink transition-colors p-2"
+            >
+              <X size={24} strokeWidth={1} />
+            </button>
+
+            <h3 className="font-serif text-3xl md:text-4xl italic mb-8 text-ink">
+              Confirmación de asistencia
+            </h3>
+
+            {rsvpStatus === 'success' ? (
+              <div className="py-8">
+                <p className="text-sm md:text-base tracking-widest-extra uppercase text-ink font-bold mb-4">¡Gracias!</p>
+                <p className="text-ink/80 text-sm md:text-base">Tu respuesta ha sido registrada correctamente.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleRsvpSubmit} className="flex flex-col items-center">
+                <p className="text-xs md:text-sm tracking-widest-extra uppercase mb-8 text-ink/80">¿Podrás asistir?</p>
+
+                <div className="flex flex-col gap-4 w-full mb-10">
+                  <label className={`border px-6 py-4 cursor-pointer transition-colors ${asistencia === 'Sí, asistiré' ? 'border-gold bg-gold/10 text-ink font-bold' : 'border-ink/20 text-ink/80 hover:border-gold/50'}`}>
+                    <input
+                      type="radio"
+                      name="asistencia"
+                      value="Sí, asistiré"
+                      className="hidden"
+                      onChange={(e) => setAsistencia(e.target.value)}
+                    />
+                    <span className="text-xs tracking-widest-extra uppercase">Sí, asistiré</span>
+                  </label>
+
+                  <label className={`border px-6 py-4 cursor-pointer transition-colors ${asistencia === 'No podré ir' ? 'border-gold bg-gold/10 text-ink font-bold' : 'border-ink/20 text-ink/80 hover:border-gold/50'}`}>
+                    <input
+                      type="radio"
+                      name="asistencia"
+                      value="No podré ir"
+                      className="hidden"
+                      onChange={(e) => setAsistencia(e.target.value)}
+                    />
+                    <span className="text-xs tracking-widest-extra uppercase">No podré ir</span>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={!asistencia || rsvpStatus === 'submitting'}
+                  className="bg-ink text-cream px-10 py-4 w-full text-xs tracking-widest-extra uppercase hover:bg-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {rsvpStatus === 'submitting' ? 'Enviando...' : 'Enviar Respuesta'}
+                </button>
+
+                {rsvpStatus === 'error' && (
+                  <p className="mt-4 text-xs text-red-500">Hubo un error al enviar. Por favor intenta de nuevo.</p>
+                )}
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* FLYER MODAL */}
+      {isFlyerOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/90 backdrop-blur-sm transition-opacity" onClick={() => setIsFlyerOpen(false)}>
+          <div className="relative max-w-2xl w-full max-h-[90vh] flex flex-col items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setIsFlyerOpen(false)}
+              className="absolute -top-12 right-0 text-cream hover:text-gold transition-colors p-2"
+            >
+              <X size={32} strokeWidth={1} />
+            </button>
+            <img
+              src={flyerImg}
+              alt="Más información"
+              className="max-w-full max-h-[85vh] object-contain"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
